@@ -13,7 +13,7 @@ public class ToasterMessage {
 
     public static void s(Context c, String message){
 
-        if(licenceKey==null && licenceKey.isEmpty()){
+        if(licenceKey==null || licenceKey.isEmpty()){
             Toast.makeText(c,"licence key should not be empty or not initialized properly",Toast.LENGTH_SHORT).show();
             return;
         }
