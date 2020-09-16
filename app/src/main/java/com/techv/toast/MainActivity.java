@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.techv.shobhantoaster.MyScannGate;
 import com.techv.shobhantoaster.restapi.ResponseHandler;
@@ -35,17 +36,17 @@ public class MainActivity extends AppCompatActivity implements ResponseHandler {
         pd.show();
 
 
-        MyScannGate.init("e4596a30-ed16-11ea-97ae-b948fabe1ad2","e4596a30",getApplicationContext());
+      //  MyScannGate.init("e4596a30-ed16-11ea-97ae-b948fabe1ad2","e4596a30",getApplicationContext());
 
         try {
             jsonObject.put("entryType","Entry");
             Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.shobhan);
-            Bitmap img1 = BitmapFactory.decodeResource(getResources(), R.drawable.one);
+      /*      Bitmap img1 = BitmapFactory.decodeResource(getResources(), R.drawable.one);
             Bitmap img2 = BitmapFactory.decodeResource(getResources(), R.drawable.two);
             Bitmap img3 = BitmapFactory.decodeResource(getResources(), R.drawable.three);
             Bitmap img4 = BitmapFactory.decodeResource(getResources(), R.drawable.four);
             Bitmap img5 = BitmapFactory.decodeResource(getResources(), R.drawable.five);
-            Bitmap img6 = BitmapFactory.decodeResource(getResources(), R.drawable.six);
+            Bitmap img6 = BitmapFactory.decodeResource(getResources(), R.drawable.six);*/
             jsonObject.put("img",encodeImageBase64(icon));
          /*   {'name':"Sreedhar",
                     "employee_id":"TI044",
@@ -70,20 +71,19 @@ public class MainActivity extends AppCompatActivity implements ResponseHandler {
             registObject.put("userType","Employee");
 
             registObject.put("override","False");
-            registObject.put("image_0",encodeImageBase64(img1));
-            registObject.put("image_1",encodeImageBase64(img2));
-            registObject.put("image_2",encodeImageBase64(img3));
-            registObject.put("image_3",encodeImageBase64(img4));
-            registObject.put("image_4",encodeImageBase64(img5));
-            registObject.put("image_5",encodeImageBase64(img6));
-
+            registObject.put("image_0",encodeImageBase64(icon));
+            registObject.put("image_1",encodeImageBase64(icon));
+            registObject.put("image_2",encodeImageBase64(icon));
+            registObject.put("image_3",encodeImageBase64(icon));
+            registObject.put("image_4",encodeImageBase64(icon));
+            registObject.put("image_5",encodeImageBase64(icon));
             try {
 
                 //For verification
 
 
 
-                MyScannGate.verify(jsonObject,this);
+                MyScannGate.register(registObject,this);
 
                 //For registration
               //  MyScannGate.register(registObject,this);
@@ -115,6 +115,16 @@ public class MainActivity extends AppCompatActivity implements ResponseHandler {
         if(pd!=null&&pd.isShowing()){
             pd.dismiss();
         }
+
+        try {
+            JSONObject responseJson = new JSONObject(response);
+            if(responseJson.has("msg")&&responseJson.getString("msg").equalsIgnoreCase("User already exists!")){
+                Toast.makeText(MainActivity.this,responseJson.getString("msg"),Toast.LENGTH_LONG).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
